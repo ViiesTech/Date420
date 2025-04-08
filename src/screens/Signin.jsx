@@ -14,6 +14,7 @@ import { onUserLogin } from '../APIManager';
 import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import Purchases from 'react-native-purchases';
 
 const { width, height } = Dimensions.get('window');
 const Login = ({ navigation }) => {
@@ -23,7 +24,7 @@ const Login = ({ navigation }) => {
         if (isFocused) isTokenAvaialble();
     }, [isFocused])
 
-
+   
 
 
     const isTokenAvaialble = async () => {

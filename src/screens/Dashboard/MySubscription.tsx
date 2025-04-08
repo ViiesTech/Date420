@@ -4,7 +4,6 @@ import { Dimensions, View } from 'react-native';
 import Header from '../../components/Header';
 import Card from '../../components/Card';
 import Br from '../../components/Br';
-import { Button } from '../../components/Button';
 import { Pera } from '../../utils/Text';
 import { Color } from '../../utils/Colors';
 import { getMyPackage } from '../../APIManager';
@@ -12,10 +11,12 @@ import Loading from '../Loading';
 import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 const MySubscription = ({ navigation }: { navigation: any }) => {
   const isFocused = useIsFocused();
   const [currPackage, setPackage]: any = useState();
+
+  console.log('my ajeeb',currPackage)
   const CardContent = () => {
     return (
       <>
@@ -36,6 +37,7 @@ const MySubscription = ({ navigation }: { navigation: any }) => {
   }, [isFocused]);
 
   const loadCurrentPackage = async () => {
+    // return alert('hello world')
     await getMyPackage(setPackage);
   };
 
@@ -58,9 +60,9 @@ const MySubscription = ({ navigation }: { navigation: any }) => {
             btnFunc={() => navigation.navigate('Subscriptions')}
           />
         </View>
-        <Button onPress={() => navigation.navigate('Subscriptions')}>
+        {/* <Button onPress={() => navigation.navigate('Subscriptions')}>
           Cancel Subscription
-        </Button>
+        </Button> */}
       </View>
     </Background>
   );

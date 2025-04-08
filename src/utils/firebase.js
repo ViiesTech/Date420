@@ -1,4 +1,4 @@
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 
@@ -15,6 +15,7 @@ const config = {
 };
 
 export async function connectFirebase() {
+if(Platform.OS === 'android') {    
   try {
     PermissionsAndroid?.request(PermissionsAndroid?.PERMISSIONS?.POST_NOTIFICATIONS);
     if (!firebase?.apps?.length) {
@@ -28,4 +29,5 @@ export async function connectFirebase() {
   }catch(err) {
     console.log(err)
   }
+}
 }

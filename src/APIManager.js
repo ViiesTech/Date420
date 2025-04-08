@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNRestart from 'react-native-restart';
 import { saveLatLong } from './redux/Reducers/appSlice';
 
-const basUrl = "https://date420friendly.com";
+export const basUrl = "https://date420friendly.com";
 const api = axios.create({
     baseURL: basUrl,
     timeout: 30000
@@ -660,6 +660,40 @@ export const getMyPackage = async (setState) => {
         errHandler(err, () => getMyPackage(setState));
     }
 }
+
+// export const subscribe = async (package_id,subscription_id) => {
+//     try {
+//         var data = {
+//             package_id: package_id,
+//             subscription_id: subscription_id
+//         }
+//         const loginSession = await AsyncStorage.getItem("token");
+//         fetch(basUrl + '/api/pacakges/subscribe', {
+//             method: 'POST',
+//             headers: {
+//                 Authorization: `Bearer ${JSON.parse(loginSession)?.access_token}`
+//             },
+//             body: data
+//         })
+//         .then(res => res.json())
+//         .then(res => {
+//             if (res.error) {
+//                 errHandler(res);
+//             }else {
+                
+//                 // setState(res?.data);
+//             }
+//         })
+//         .catch(err => {
+//             throw err;
+//         });
+//     }catch (err) {
+//         console.log(err)
+//         // Toast.show('Failed to load package', Toast.SHORT);
+//         // errHandler(err, () => getMyPackage(setState));
+//     }
+// }
+
 
 export const getPackages = async (setState) => {
     try {

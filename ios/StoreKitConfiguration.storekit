@@ -1,0 +1,153 @@
+{
+  "identifier" : "14FB3B4F",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "47D7C732",
+      "localizations" : [
+
+      ],
+      "name" : "Subscription Group",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "479B4082",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "date420_month1",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "date4201monthpackage",
+          "subscriptionGroupID" : "47D7C732",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "12.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "15D9C50D",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "date420_month3",
+          "recurringSubscriptionPeriod" : "P3M",
+          "referenceName" : "date4203monthpackage",
+          "subscriptionGroupID" : "47D7C732",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "24.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "E7B3838E",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "date420_year1",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "date420annualpackage",
+          "subscriptionGroupID" : "47D7C732",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "subscriptionOffersKeyPair" : {
+    "id" : "C6533C59",
+    "privateKey" : "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgHbsIVuHSt5lNI39HrOBne4ecdhQ550AKlzrCU1Fm0eSgCgYIKoZIzj0DAQehRANCAATgFBCVBNGEYpJrckwpXK0IhqSx2EiR00TSvIK7/jAt63Rvs1ypyZMIH+hMSpfrD910KxyJzNDyJOtgD8mKIDnk"
+  },
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

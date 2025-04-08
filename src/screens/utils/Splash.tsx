@@ -19,23 +19,7 @@ const Splash = ({ navigation }: { navigation: any }) => {
         }
     }, [splashTimeout]);
 
-      useEffect(() => {
-    
-        offerings()
-    
-    
-      },[])
-    
-      const offerings = async () => {
-      try {  
-        const offering = await Purchases.getOfferings();
-        console.log('hh',offering.current?.availablePackages)
-        // alert(offering.current)
-    } catch (error) {
-        console.log(error)
-    }
-    
-      }
+   
 
     const getData = async () => {
         const res = await getAppData();
