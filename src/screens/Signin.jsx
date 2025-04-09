@@ -15,16 +15,22 @@ import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import Purchases from 'react-native-purchases';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const { width, height } = Dimensions.get('window');
 const Login = ({ navigation }) => {
     const isFocused = useIsFocused();
 
+   
+
+
     useEffect(() => {
-        if (isFocused) isTokenAvaialble();
+        if (isFocused) {
+            isTokenAvaialble();
+        } 
     }, [isFocused])
 
-   
 
 
     const isTokenAvaialble = async () => {
@@ -94,8 +100,15 @@ const Login = ({ navigation }) => {
                     } else { // IF NOT CHECKED, REMOVE THE SESSION
                         await AsyncStorage.removeItem("session");
                     }
-
-                    navigation.replace("HotList");
+                    const expiry = await AsyncStorage.getItem('expiry');
+                    const isPackageExpired = moment().isAfter(expiry);
+                    // return console.log('hhhh date',isPackageExpired)
+                    if (isPackageExpired) {
+                        navigation.replace('Subscriptions');
+                    } else {
+                        navigation.replace("HotList");
+                    }
+        
                     Toast.show('Login Successful', Toast.SHORT);
                 }
 

@@ -22,7 +22,7 @@ export const appSlice = createSlice({
         gender: null,
         lat: null,
         long: null,
-        subscription_expiry: null
+        // subscription_expiry: null
     },
     reducers: {
         saveAppData: (state, { payload }) => {
@@ -49,9 +49,9 @@ export const appSlice = createSlice({
             state.lat = action.payload?.latitude
             state.long = action.payload?.longitude
         },
-        saveDate: (state,action) => {
-            state.subscription_expiry = action.payload
-        },
+        // saveDate: (state,action) => {
+        //     state.subscription_expiry = action.payload
+        // },
         startSession: async (state, { payload }) => {
             await AsyncStorage?.setItem(
                 "token",

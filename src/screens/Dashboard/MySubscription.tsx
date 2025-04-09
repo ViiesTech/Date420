@@ -10,6 +10,7 @@ import { getMyPackage } from '../../APIManager';
 import Loading from '../Loading';
 import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { height } = Dimensions.get('window');
 const MySubscription = ({ navigation }: { navigation: any }) => {
@@ -36,9 +37,14 @@ const MySubscription = ({ navigation }: { navigation: any }) => {
     if (isFocused) loadCurrentPackage();
   }, [isFocused]);
 
+  const setExpiry = async () => {
+    await AsyncStorage.setItem('expiry',currPackage?.end_date)    
+  }
+
   const loadCurrentPackage = async () => {
     // return alert('hello world')
     await getMyPackage(setPackage);
+     await setExpiry()
   };
 
   if (!currPackage) {

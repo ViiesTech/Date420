@@ -45,14 +45,25 @@ const Signup = ({ navigation }: { navigation: any }) => {
             getFireBaseConnection();
         }, []);
 
-        const getFireBaseConnection = async () => {
+        // const getFireBaseConnection = async () => {
+        //     const token: any = await connectFirebase();
+        //     if (!token) {
+        //         getFireBaseConnection();
+        //     }else {
+        //         setFCM(token);
+        //     }
+        // }
+
+        const getFireBaseConnection = async (retryCount = 0) => {
             const token: any = await connectFirebase();
-            if (!token) {
-                getFireBaseConnection();
-            }else {
-                setFCM(token);
+            if (token) {
+              setFCM(token);
+            } else if (retryCount < 5) {
+              setTimeout(() => getFireBaseConnection(retryCount + 1), 2000); // Retry after 2 seconds
+            } else {
+              console.log("Failed to get FCM token after multiple attempts");
             }
-        }
+          };
 
         const checkValidations = () => {
 

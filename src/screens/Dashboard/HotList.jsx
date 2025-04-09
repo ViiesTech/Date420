@@ -18,7 +18,7 @@ import PublishedAds from '../../components/PublishedAds';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { saveLatLong } from '../../redux/Reducers/appSlice';
 
 const { width, height } = Dimensions.get('window');
@@ -32,6 +32,7 @@ const HotList = ({ navigation }) => {
 
 
     // console.log('gello',lat,long)
+      
     
    
   const requestLocationPermission = async () => {

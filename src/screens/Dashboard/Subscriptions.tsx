@@ -6,33 +6,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import Background from '../utils/Background';
-import { Alert, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, FlatList, StyleSheet,  TouchableOpacity, View } from 'react-native';
 import Header from '../../components/Header';
 import Card from '../../components/Card';
 import Br from '../../components/Br';
 import { Button } from '../../components/Button';
-import { H6, Pera, Small } from '../../utils/Text';
+import { H6, Pera } from '../../utils/Text';
 import { Color } from '../../utils/Colors';
 import Toast from 'react-native-simple-toast';
 import WebView from 'react-native-webview';
 import queryString from 'query-string';
-
-import Swiper from 'react-native-swiper';
 import {
-  ArrowCircleLeft2,
-  ArrowCircleRight2,
   Notification,
 } from 'iconsax-react-native';
-import { basUrl, getMyPackage, getPackages, subscribePackage } from '../../APIManager';
+import { getMyPackage,  subscribePackage } from '../../APIManager';
 import Loading from '../Loading';
 import { useIsFocused } from '@react-navigation/native';
-import { captureSubscription, generateToken, subscribe } from '../../Paypal';
+import { captureSubscription,  } from '../../Paypal';
 import { Message } from '../../utils/Alert';
 import moment from 'moment';
 import Purchases from 'react-native-purchases';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
-import { saveDate } from '../../redux/Reducers/appSlice';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -50,9 +44,7 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
   const [currentIndex,setCurrentIndex] = useState(0)
   const [scrolling,setScrolling] = useState(false)
 
-  console.log('current',currPackage)
 
-  const dispatch = useDispatch()
 
   const SecondIcon = () => (
     <Notification size="25" color={Color('whiteText')} variant="Bold" />
@@ -87,36 +79,38 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
     );
   };
 
+
+
   useEffect(() => {
     if (isFocused) {
       offerings()
     }
   }, [isFocused]);
 
-  const checkActiveSubscription = async () => {
-    try {
-      const customerInfo = await Purchases.getCustomerInfo();
+  // const checkActiveSubscription = async () => {
+  //   try {
+  //     const customerInfo = await Purchases.getCustomerInfo();
   
-      // Check for active entitlement
-      const activeEntitlement = customerInfo.entitlements.active;
-      // alert('hh')
-      if (Object.keys(activeEntitlement).length > 0) {
-        alert('hh')
-        // There is at least one active subscription
-        const entitlement = Object.values(activeEntitlement)[0]; // Get the first one (or match by ID)
-        console.log('hhellogg',entitlement.productIdentifier);
-        // setCurrentPackage(entitlement.productIdentifier)
+  //     // Check for active entitlement
+  //     const activeEntitlement = customerInfo.entitlements.active;
+  //     // alert('hh')
+  //     if (Object.keys(activeEntitlement).length > 0) {
+  //       alert('hh')
+  //       // There is at least one active subscription
+  //       const entitlement = Object.values(activeEntitlement)[0]; // Get the first one (or match by ID)
+  //       console.log('hhellogg',entitlement.productIdentifier);
+  //       // setCurrentPackage(entitlement.productIdentifier)
   
-        return entitlement.productIdentifier; // e.g., 'date420_month1'
-      } else {
-        console.log("User is not subscribed.");
-        return null;
-      }
-    } catch (error) {
-      console.log("Failed to fetch customer info:", error);
-      return null;
-    }
-  };
+  //       return entitlement.productIdentifier; // e.g., 'date420_month1'
+  //     } else {
+  //       console.log("User is not subscribed.");
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.log("Failed to fetch customer info:", error);
+  //     return null;
+  //   }
+  // };
 
 
   const offerings = async () => {
@@ -197,6 +191,8 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
   // };
 
   const upgradePackage = async (data) => {
+ 
+    // return console.log(apiData)
 
     if (!data) {
       Alert.alert('Error', 'No available package for this plan.');
@@ -216,17 +212,20 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
 
         if (purchaseMade.transaction.purchaseDate) {
               try {
-                  var data = {
-                      package_id: data.packageType === 'MONTHLY' ? 1 : data.packageType === 'THREE_MONTH' ? 4 : 12,
-                      subscription_id: 'abcd'
-                  }
+                let apiData = {
+                  package_id: data.packageType === 'MONTHLY' ? 1 : data.packageType === 'THREE_MONTH' ? 4 : 12,
+                  subscription_id: '1'
+              }
+                  console.log('api dataa of subscribe ====>',apiData)
                   const loginSession = await AsyncStorage.getItem("token");
-                  fetch(basUrl + '/api/pacakges/subscribe', {
+                  // console.log(loginSession)
+                 await fetch('https://date420friendly.com/api/pacakges/subscribe', {
                       method: 'POST',
                       headers: {
-                          Authorization: `Bearer ${JSON.parse(loginSession)?.access_token}`
+                          Authorization: `Bearer ${JSON.parse(loginSession)?.access_token}`,
+                           'Content-Type': 'application/json'
                       },
-                      body: data
+                      body: JSON.stringify(apiData)
                   })
                   .then(res => res.json())
                   .then(async res => {
@@ -235,7 +234,6 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
                         loadCurrentPackage()
                         console.log(res.message)
                         // setCurrentPackage(entitlement.productIdentifier);
-                        await dispatch(saveDate(res.data.end_date))
                       }else {
                         console.log('else',res.message)
                           // setState(res?.data);
@@ -251,7 +249,7 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
               }
           // console.log("✅ Subscribed to:", entitlement.productIdentifier);
         } else {
-          console.log("❌ No active entitlement after purchase");
+          console.log("❌ revenue cat issue");
         }
     
   
@@ -405,7 +403,7 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
                      return (  
                       <TouchableOpacity key={index} style={styles.slide}>
                         <Card
-                          showActiveTag={`${'$' + currPackage?.pacakge_detail?.price}` == item.product?.priceString}
+                          showActiveTag={!isPackageExpired ? `${'$' + currPackage?.pacakge_detail?.price}` == item.product?.priceString : isPackageExpired}
                           showFreeTag={item?.title === 'Free'}
                           title={item?.packageType === 'MONTHLY' ? '1 Month Package' : item?.packageType === 'THREE_MONTH' ? '3 Month Package' : item?.packageType === 'FREE_TRIAL' ? 'Free Trial - 1 Month' : '1 Year Package'}
                           content={<CardContent data={item} />}
@@ -420,7 +418,7 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
                             </Button>
                           } */}
                         {
-                      `${'$' + currPackage?.pacakge_detail?.price}` == item.product?.priceString|| item.packageType == 'FREE_TRIAL' ? (
+                      `${'$' + currPackage?.pacakge_detail?.price}` == item.product?.priceString && !isPackageExpired || item.title === 'Free' ? (
                             null
                            ) : (
                             <Button
@@ -446,7 +444,7 @@ export default Subscriptions;
 
 const styles = StyleSheet.create({
   slide: {
-    height: height * 0.5,
+    height: height * 0.6,
     width: width,
     justifyContent: 'center',
     alignItems: 'center',
