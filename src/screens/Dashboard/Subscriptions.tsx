@@ -230,9 +230,10 @@ const Subscriptions = ({ navigation }: { navigation: any }) => {
                   .then(res => res.json())
                   .then(async res => {
                       if (res.status === 'success') {
-                        // alert('api chal gyi')
-                        loadCurrentPackage()
                         console.log(res.message)
+                        // alert('api chal gyi')
+                       await loadCurrentPackage()
+                       navigation.replace('HotList')
                         // setCurrentPackage(entitlement.productIdentifier);
                       }else {
                         console.log('else',res.message)

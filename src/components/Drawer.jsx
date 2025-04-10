@@ -4,18 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideDrawer } from '../redux/Reducers/drawerSlice';
 import Toast from 'react-native-simple-toast';
 import { Color } from '../utils/Colors';
-import { ArrowLeft, ArrowRight, Card, Cards, Coin1, Home, MessageNotif, Notification, Profile, Profile2User, ProfileTick, Reserve } from 'iconsax-react-native';
+import { ArrowLeft, ArrowRight, Card,  Coin1, Home, MessageNotif,  Profile, Profile2User, ProfileTick, Reserve, User } from 'iconsax-react-native';
 import { H5, H6, Pera } from '../utils/Text';
 import Br from './Br';
 import { ButtonWithIcon } from './Button';
 import { useNavigation } from '../utils/NavigationContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNRestart from 'react-native-restart';
+import ConfirmationModal from './ConfirmationModal';
+import { deleteAccount } from '../APIManager';
 
 const { width, height } = Dimensions.get('screen');
 
 const Drawer = () => {
     // Create animated value for the horizontal position
+    const [accountModal,setAccountModal] = useState(true)
     const slideAnim = new Animated.Value(-width);
     const showDrawer = useSelector(({drawer}) => drawer?.drawer);
     const dispatch = useDispatch();
@@ -30,6 +33,18 @@ const Drawer = () => {
     }, [slideAnim, showDrawer]);
     
     if (!showDrawer) return;
+
+    const onConfirmDelete = async () => {
+      const res = await deleteAccount()
+      console.log('delete account response',res)
+      if(res.status === 'success') {
+        await AsyncStorage.removeItem('session');
+        await AsyncStorage.removeItem('token');
+        Toast.show('Your account has been deleted successfully', Toast.SHORT);
+      } else {
+        console.log('else',res.message)
+      }
+    }
 
     const Header = () => {
         const [ user, setUser ] = useState({
@@ -77,9 +92,15 @@ const Drawer = () => {
     }
     const DrawerItem = ({ icon, label, screen }) => {
         const clicked = () => {
+           if(!screen) {
+                setAccountModal(true)
+           } else { 
             navigate(screen);
             dispatch(hideDrawer());
         }
+        }
+       
+
         return (
             <>
                 <TouchableOpacity onPress={clicked}>
@@ -98,6 +119,7 @@ const Drawer = () => {
     }
 
     return (
+        <>
         <Animated.View
             style={[
                 styles.drawer,
@@ -163,6 +185,10 @@ const Drawer = () => {
                     label="My Preferences"
                     screen="MyPreferences"
                 />
+                 <DrawerItem 
+                    icon={<User size="25" color={Color('whiteText')} variant="Bold"/>}
+                    label="Delete Account"
+                />
             </View>
             <ButtonWithIcon 
                 style={{ position: 'absolute', bottom: height * 0.08, left: width * 0.05, backgroundColor: Color('primary_200'), width: width * 0.6, zIndex: 1 }} 
@@ -177,7 +203,18 @@ const Drawer = () => {
                 icon={<ArrowRight size="25" color={Color('background')} variant="Bold"/>}
             >Logout</ButtonWithIcon>
         </Animated.View>
-    )
+        <ConfirmationModal
+        visible={accountModal}
+        onPressOut={() => setAccountModal(false)}
+        modalText={'Are you sure you want to delete your account?'}
+        onCancel={() => setAccountModal(false)}
+        onConfirm={() => onConfirmDelete()}
+        onRequestClose={() => {
+          setAccountModal(!accountModal);
+        }}
+      />
+        </>
+        )
 }
 
 export default Drawer;

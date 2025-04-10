@@ -708,7 +708,7 @@ const EditProfile = ({ navigation, route }: Props) => {
             );
             setLoading(false);
             Toast.show('Profile has been created!!', Toast.SHORT);
-            navigation.replace('Subscriptions');
+            navigation.replace('MySubscription');
         }
     };
 

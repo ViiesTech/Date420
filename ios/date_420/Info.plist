@@ -43,13 +43,12 @@
 <string>We need access to your calendar to help you schedule and keep track of upcoming dates and events with your matches.</string>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access to your photo library so you can upload and share images within the app.</string>
-
 <key>NSPhotoLibraryAddUsageDescription</key>
 <string>We need permission to save photos to your library when you download or edit images using the app.</string>
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>We need your location to provide better services.</string>
+<string>We use your location to help you find potential matches nearby. For example, we show profiles of people who are close to your current location.</string>
 <key>NSLocationAlwaysUsageDescription</key>
-<string>We need access to your location for background features.</string>
+<string>We use your location to keep your nearby matches updated even when the app is in the background. For example, your profile will appear in nearby searches as you move.</string>
 <key>NSCameraUsageDescription</key>
 <string>We need access to your camera to allow you to take and upload photos or videos directly from the app.</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

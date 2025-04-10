@@ -71,6 +71,22 @@ export const onUserLogin = async (email, password, fcm, setLoading) => {
     }
 }
 
+export const deleteAccount = async () => {
+    const loginSession = await AsyncStorage.getItem("token");
+    const token = JSON.parse(loginSession)?.access_token;
+    try {
+        const res = await api.post('/api/user/delete-account', {
+        },{
+            headers:{
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        return res.data;
+    }catch (err) {
+        Message("Failed", "Your delete account request has been failed with following reason: " + err.message);
+    }
+}
+
 export const onUserSignup = async (name, username, email, gender, password, fcm, setLoading) => {
     try {
         const res = await api.post('/api/user/register', {
