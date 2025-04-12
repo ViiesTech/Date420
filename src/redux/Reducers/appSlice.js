@@ -19,7 +19,7 @@ export const appSlice = createSlice({
         lifeStyle: null,
         smoking: null,
         drinking: null,
-        gender: null,
+        gender: ['male','female'],
         lat: null,
         long: null,
         // subscription_expiry: null

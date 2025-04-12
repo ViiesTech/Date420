@@ -1,5 +1,5 @@
 import React, { lazy, useEffect, useState } from 'react'
-import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Toast from 'react-native-simple-toast';
 import Background from './utils/Background';
 import { Color } from '../utils/Colors';
@@ -14,6 +14,7 @@ import { Message } from '../utils/Alert';
 import { onUserSignup } from '../APIManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connectFirebase } from '../utils/firebase';
+import CheckBox from '@react-native-community/checkbox';
 
 const Dropdown = lazy(() => import('./utils/Dropdown'));
 
@@ -32,19 +33,23 @@ const Signup = ({ navigation }: { navigation: any }) => {
         const [password, setPassword] = useState('');
         const [confirmPassword, setConfirmPassword] = useState('');
         const [fcm, setFCM] = useState('');
+        const [agree,setAgree] = useState(false)
 
         const nameReg = new RegExp(patterns?.name, '');
         const emailReg = new RegExp(patterns?.email, 'g');
         const passwordReg = new RegExp(patterns?.password, '');
 
-        useEffect(() => {
-            const arr = Object.keys(genderList).map((key: any) => {return {"label": genderList[key],"value": key}});
-            setGenders(arr);
-        }, [genderList])
-        useEffect(() => {
-            getFireBaseConnection();
-        }, []);
+        console.log('first',agree)
 
+        useEffect(() => {
+            if (genderList) {
+                const arr = Object.keys(genderList).map((key: any) => ({
+                    label: genderList[key],
+                    value: key
+                }));
+                setGenders(arr);
+            }
+        }, [genderList]);
         // const getFireBaseConnection = async () => {
         //     const token: any = await connectFirebase();
         //     if (!token) {
@@ -120,6 +125,11 @@ const Signup = ({ navigation }: { navigation: any }) => {
                 return;
             }
 
+           if(!agree){ 
+            Message('Agreement Required', 'Please accept the Terms of Use to proceed.');
+            return;
+        }
+        
             return true;
         }
         const signup = async () => {
@@ -184,7 +194,10 @@ const Signup = ({ navigation }: { navigation: any }) => {
                     data={genders}
                     style={{ marginBottom: height * 0.015 }}
                     selectedValue={gender}
-                    onValueChange={(value: React.SetStateAction<string>) => setGender(value)}
+                    onValueChange={(value: React.SetStateAction<string>) => {
+                        const selectedLabel = genderList?.[value]
+                        setGender(selectedLabel)
+                    }}
                     label="Gender"
                 />
                 <Input
@@ -213,6 +226,22 @@ const Signup = ({ navigation }: { navigation: any }) => {
                     style={{ marginBottom: height * 0.015 }}
                     onChange={(confirm_password: string) => setConfirmPassword(confirm_password)}
                 />
+                 <View style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        gap: Platform.OS === 'ios' ? 10 : 0,
+                                    }}>
+                                        <CheckBox
+                                            style={{ borderRadius: 10 }}
+                                            disabled={false}
+                                            value={agree}
+                                            onValueChange={(event) => setAgree(event)}
+                                            tintColor={Color('primary')}
+                                            tintColors={{ true: Color('primary'), false: Color('primary') }}
+                                        />
+                                        <Pera style={{ color: Color('primary') }}><Text>I agree to the <Text onPress={async () => await Linking.openURL('https://date420friendly.com/term-and-condition')}>Terms of Use</Text></Text></Pera>
+                                    </View>
                 <Br space={0.05} />
                 <Button onPress={signup} loading={loading}>Signup</Button>
             </View>

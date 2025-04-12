@@ -897,6 +897,7 @@ export const chatUUID = async (user_id) => {
 }
 
 export const onChat = async (uuid, user_id, message) => {
+    console.log('sending message ====>',message)
     try {
         const loginSession = await AsyncStorage.getItem("token");
         const res = await api.post('/api/chat/submit-chat', {
@@ -912,6 +913,40 @@ export const onChat = async (uuid, user_id, message) => {
     }catch (err) {
         Toast.show('Failed to submit chat', Toast.SHORT);
         errHandler(err, () => onChat(uuid, sender_id, message));
+    }
+}
+
+export const onReportAnyUser = async (user_id,message) => {
+    try {
+        const loginSession = await AsyncStorage.getItem("token");
+        const res = await api.post('/api/user/report-user', {
+            user_id: user_id, 
+            message: message, 
+        }, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(loginSession)?.access_token}`,
+                // 'Content-Type': 'application/json'
+            }
+        });
+        return res.data;
+    }catch (err) {
+        Toast.show('Failed to report', Toast.SHORT);
+    }
+}
+
+export const onBlockUser = async (id) => {
+    console.log('id',id)
+    try {
+        const loginSession = await AsyncStorage.getItem("token");
+        const res = await api.get(`/api/chat/toggle-block/${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(loginSession)?.access_token}`,
+                // 'Content-Type': 'application/json'
+            }
+        });
+        return res.data;
+    }catch (err) {
+        Toast.show('Failed to report', Toast.SHORT);
     }
 }
 

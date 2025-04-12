@@ -18,7 +18,7 @@ const { width, height } = Dimensions.get('screen');
 
 const Drawer = () => {
     // Create animated value for the horizontal position
-    const [accountModal,setAccountModal] = useState(true)
+    const [accountModal,setAccountModal] = useState(false)
     const slideAnim = new Animated.Value(-width);
     const showDrawer = useSelector(({drawer}) => drawer?.drawer);
     const dispatch = useDispatch();
@@ -205,7 +205,6 @@ const Drawer = () => {
         </Animated.View>
         <ConfirmationModal
         visible={accountModal}
-        onPressOut={() => setAccountModal(false)}
         modalText={'Are you sure you want to delete your account?'}
         onCancel={() => setAccountModal(false)}
         onConfirm={() => onConfirmDelete()}

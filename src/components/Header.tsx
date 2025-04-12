@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { H5 } from '../utils/Text';
+import { H5, Pera } from '../utils/Text';
 import { ArrowLeft, Category2 } from 'iconsax-react-native';
 import { Color } from '../utils/Colors';
 import { useDispatch } from 'react-redux';
@@ -18,7 +18,7 @@ interface Props {
     backScreen?: any,
 }
 
-const Header = ({backScreen, showMenu, navigation, backBtn, hideMenu, headerText, showSecondIcon, secondIcon}: Props) => {
+const Header = ({backScreen, showMenu,  navigation, backBtn, hideMenu, headerText, showSecondIcon, secondIcon}: Props) => {
     const dispatch = useDispatch();
 
     return (
@@ -51,6 +51,7 @@ const Header = ({backScreen, showMenu, navigation, backBtn, hideMenu, headerText
                     </TouchableOpacity>
                 )
             }
+                      
         </>
     )
 }

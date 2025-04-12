@@ -28,6 +28,9 @@ const Chat = ({ navigation, route }: { navigation: any, route: any }) => {
     const userTime = new Date(serverTime.getTime() + (parseInt(timezoneOffset) * 60000));
     const formattedTime = userTime.toISOString().split('T').pop()?.split('.').shift();
 
+
+    
+    
     // TESTED ONLY IN PAKISTAN
     // NEED TO TEST IN OTHER COUNTRIES
     // const tweetTime = moment(formattedTime, 'hh:mm:ss').format('hh:mm A') // CHANGED 2024-08-26 moment(time, 'HH:mm:ss').format('hh:mm A');
@@ -135,20 +138,52 @@ const Chat = ({ navigation, route }: { navigation: any, route: any }) => {
   const ChatInputBox = () => {
     const [textMsg, setTextMsg]: any = useState("");
 
+    const filterBadWords = (text: string) => {
+      const badWords = [
+        'porn', 'blowjob', 'anal', 'nude', 'sex', 'fetish', 'bdsm', 'orgasm', 'xxx',
+        'slut', 'dick', 'pussy', 'kill', 'rape', 'shoot', 'stab', 'bomb', 'attack',
+        'choke', 'beat', 'murder', 'n\\*\\*r', 'tranny', 
+        'terrorist', 'retard', 'bitch'
+      ];
+    
+      const escapeRegex = (word: string) =>
+        word.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    
+      const escapedWords = badWords.map(escapeRegex);
+      const regex = new RegExp(`(${escapedWords.join('|')})`, 'gi');
+    
+      const result = text.replace(regex, (match) => {
+        console.log("Matched:", match);
+        return '*'.repeat(match.length);
+      });
+    
+      return result;
+    };
+    
     const onEnterChat = async () => {
       if (textMsg.length > 0) {
+        // alert(textMsg)
         Keyboard.dismiss();
         const chatID = UUID || uuidv4();
+        const cleanedText = filterBadWords(textMsg.trim()); 
+
+      //  return alert(cleanedText)
+    
         Toast.show('Sending Message...', Toast.SHORT);
 
+        // if (regex.test(textMsg)) {
+        //   Toast.show('Your message contains inappropriate words.', Toast.LONG);
+        //   return;
+        // }
+    
         if (group_id) {
-          const submittedChat =  await onGroupChat(group_id, textMsg);
+          const submittedChat = await onGroupChat(group_id, cleanedText);
           if (submittedChat.status === 'success') {
             setTextMsg("");
             socket.emit('group_message', submittedChat.data);
           }
-        }else {
-          const submittedChat =  await onChat(chatID, user_id, textMsg);
+        } else {
+          const submittedChat = await onChat(chatID, user_id, cleanedText);
           if (submittedChat.status === 'success') {
             if (!UUID) getUUID();
             setTextMsg("");
@@ -156,7 +191,31 @@ const Chat = ({ navigation, route }: { navigation: any, route: any }) => {
           }
         }
       }
-    }
+    };
+    
+
+    // const onEnterChat = async () => {
+    //   if (textMsg.length > 0) {
+    //     Keyboard.dismiss();
+    //     const chatID = UUID || uuidv4();
+    //     Toast.show('Sending Message...', Toast.SHORT);
+
+    //     if (group_id) {
+    //       const submittedChat =  await onGroupChat(group_id, textMsg);
+    //       if (submittedChat.status === 'success') {
+    //         setTextMsg("");
+    //         socket.emit('group_message', submittedChat.data);
+    //       }
+    //     }else {
+    //       const submittedChat =  await onChat(chatID, user_id, textMsg);
+    //       if (submittedChat.status === 'success') {
+    //         if (!UUID) getUUID();
+    //         setTextMsg("");
+    //         socket.emit('send_user_message', submittedChat.data);
+    //       }
+    //     }
+    //   }
+    // }
     return (
       <>
         <View
@@ -207,7 +266,8 @@ const Chat = ({ navigation, route }: { navigation: any, route: any }) => {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-            <View
+            <TouchableOpacity
+              onPress={() => navigation.replace('UsersProfile', { user_id: user_id })}
               style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
               <Image
                 source={{ uri: photo }}
@@ -221,7 +281,7 @@ const Chat = ({ navigation, route }: { navigation: any, route: any }) => {
                 <H6 numberOfLines={1}>{name}</H6>
                 {/* <Pera style={{ color: Color('whiteText') }}>Online</Pera> */}
               </View>
-            </View>
+            </TouchableOpacity>
             {/* <Setting5 size="25" color={Color('primary')} variant="Outline" /> */}
           </View>
         </View>

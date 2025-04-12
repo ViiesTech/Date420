@@ -1,7 +1,10 @@
-import {Modal, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Modal, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Button} from './Button';
 import { Color } from '../utils/Colors';
+import Input from './Input';
+
+const height = Dimensions.get('window').height
 
 const ConfirmationModal = ({
   modalText,
@@ -9,6 +12,9 @@ const ConfirmationModal = ({
   onConfirm,
   onRequestClose,
   visible,
+  input,
+  value,
+  onChangeText,
 }) => {
   return (
     <Modal
@@ -18,7 +24,21 @@ const ConfirmationModal = ({
       onRequestClose={onRequestClose}>
       <View style={styles.modalWrapper}>
         <View style={styles.modalView}>
-          <Text style={styles.text}>{modalText}</Text>
+          <Text style={[styles.text,{marginBottom: !input && 20 }]}>{modalText}</Text>
+          {input &&
+                 <Input
+                 value={value}
+                 label={true}
+                //  secure={true}
+                //  secureIcon={true}
+                 color={Color('primary')}
+                //  icon={<Lock1 size="25" color={Color('primary')} />}
+                 placeholder='Reason'
+                 placeholderColor={Color('primary_100')}
+                 style={{ marginBottom: height * 0.025 }}
+                 onChange={onChangeText}
+             />
+        }
           <View style={styles.buttonWrapper}>
             <Button
               children={'Cancel'}
@@ -61,7 +81,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   buttonWrapper: {
     flexDirection: 'row',
